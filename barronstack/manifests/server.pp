@@ -1,23 +1,55 @@
+# Class: barronstack::server
+#
+# Installs the basic requirements for running a barronstack server
+#
+# Parameters:
+#   [*name*]   - Name that will be used to identify this server
+#   [*config*] - The name of the configuration to install
+#
+# Actions:
+#
+# Requires:
+#
+# Sample Usage:
+#   class { 'barronstack::server':
+#       name   => 'mc-dota',
+#       config => 'mincraft-dota-config'
+#   }
+#
 class barronstack::server(
-    $name = "mc-server", 
-    $config = "vanilla-config"
+    $name = 'mc-server',
+    $config = 'vanilla-config'
 ){
     $user = $name
-    $group = "mc-editors"
+    $group = 'mc-editors'
     $server_path = "/home/${user}"
-    $configGit = "git://github.com/barroncraft/${config}.git"
-    $paths = ["/bin", "/sbin", "/usr/bin", "/usr/sbin"]
+    $config_git = "git://github.com/barroncraft/${config}.git"
+    $paths = ['/bin', '/sbin', '/usr/bin', '/usr/sbin']
 
-    package { [ "sudo", 
-                "screen", 
-                "git", 
-                "wget", 
-                "less", 
-                "rsync",
-                "zip",
-                "gzip",
-                "openjdk-6-jre" ]: 
-        ensure => installed, 
+    $packages = [
+        'sudo',
+        'screen',
+        'git',
+        'wget',
+        'less',
+        'rsync',
+        'zip',
+        'gzip',
+        'openjdk-6-jre',
+    ]
+
+    $directories = [
+        $server_path,
+        "${server_path}/backups",
+        "${server_path}/backups/worlds",
+        "${server_path}/backups/server",
+        "${server_path}/bin",
+        "${server_path}/configs/${config}",
+        "${server_path}/logs",
+    ]
+
+    package { $packages:
+        ensure => installed,
     }
 
     service { $name:
@@ -26,33 +58,27 @@ class barronstack::server(
     }
 
     file { "${name}_init":
-        path   => "/etc/init.d/${name}",
-        ensure => link,
-        target => "${server_path}/bin/minecraft.sh",
-        mode   => 755,
+        ensure  => link,
+        path    => "/etc/init.d/${name}",
+        target  => "${server_path}/bin/minecraft.sh",
+        mode    => '0755',
         require => File["${name}_script"],
     }
 
     file { "${name}_script":
-        path   => "${server_path}/bin/minecraft.sh",
         ensure => present,
-        source => "puppet:///modules/barronstack/minecraft.sh",
+        path   => "${server_path}/bin/minecraft.sh",
+        source => 'puppet:///modules/barronstack/minecraft.sh',
         owner  => $user,
         group  => $group,
-        mode   => 774,
+        mode   => '0774',
     }
 
-    file { [ "${server_path}", 
-             "${server_path}/backups", 
-             "${server_path}/backups/worlds", 
-             "${server_path}/backups/server", 
-             "${server_path}/bin", 
-             "${server_path}/configs", 
-             "${server_path}/logs" ]:
-        ensure  => "directory",
+    file { $directories:
+        ensure  => directory,
         owner   => $user,
         group   => $group,
-        mode    => 774,
+        mode    => '0774',
     }
 
     file { "${server_path}/server":
@@ -60,36 +86,36 @@ class barronstack::server(
         target => "configs/${config}",
         owner  => $user,
         group  => $group,
-        mode   => 744,
+        mode   => '0744',
     }
 
     file { "${server_path}/.bashrc":
+        ensure  => present,
         content => 'PATH=$PATH:~/bin',
-        ensure  => "present",
         owner   => $user,
         group   => $group,
-        mode    => 644,
+        mode    => '0644',
     }
 
     user { $user:
         ensure => present,
-        shell  => "/bin/bash",
+        shell  => '/bin/bash',
         home   => $server_path,
     }
 
     group { $group:
-        ensure => "present",
+        ensure => present,
     }
 
     exec { "${name}_create_config":
-        command => "git clone ${configUrl} ${configName}",
+        command => "git clone ${config_git} ${config}",
         cwd     => "${server_path}/configs",
-        creates => "${server_path}/configs/${configName}",
+        creates => "${server_path}/configs/${config}/.git",
         path    => $paths,
-        user    => "minecraft",
+        user    => $user,
         require => [
-            Package["git"],
+            Package['git'],
             File["${server_path}/configs"]
-       ],
+        ],
     }
 }
