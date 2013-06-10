@@ -52,7 +52,6 @@ bungee_start() {
         echo 'BungeeCord is already running'
     else
         echo -n 'Starting BungeeCord... '
-        cd $HOME_DIR
         run_as "cd $BUNGEE_PATH && screen -dmS $SCREEN $INVOCATION"
         sleep 7
         if bungee_running; then
