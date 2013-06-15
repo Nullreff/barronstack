@@ -4,7 +4,7 @@
 #
 # Parameters:
 #   [*name*]   - Name that will be used to identify this server
-#   [*config*] - The name of the configuration to install
+#   [*config*] - The github link to the configuration to install
 #
 # Actions:
 #
@@ -13,17 +13,14 @@
 # Sample Usage:
 #   class { 'barronstack::server':
 #       name   => 'mc-dota',
-#       config => 'mincraft-dota-config'
+#       config => 'barroncraft/mincraft-dota-config'
 #   }
 #
-class barronstack::server(
-    $name = 'mc-server',
-    $config = 'vanilla-config'
-){
+class barronstack::server($name, $config){
     $user = $name
     $group = 'mc-editors'
     $server_path = "/home/${user}"
-    $config_git = "git://github.com/barroncraft/${config}.git"
+    $config_git = "git://github.com/${config}.git"
     $paths = ['/bin', '/sbin', '/usr/bin', '/usr/sbin']
 
     $packages = [
