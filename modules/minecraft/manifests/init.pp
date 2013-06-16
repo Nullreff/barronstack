@@ -1,4 +1,4 @@
-# Class: barronstack::server
+# Class: minecraft
 #
 # Installs the basic requirements for running a barronstack server
 #
@@ -11,12 +11,12 @@
 # Requires:
 #
 # Sample Usage:
-#   class { 'barronstack::server':
+#   class { 'minecraft':
 #       name   => 'mc-dota',
 #       config => 'barroncraft/mincraft-dota-config'
 #   }
 #
-class barronstack::server($name, $config){
+class minecraft($name, $config) {
     $user = $name
     $group = 'mc-editors'
     $server_path = "/home/${user}"
@@ -65,7 +65,7 @@ class barronstack::server($name, $config){
     file { "${name}_script":
         ensure => present,
         path   => "${server_path}/bin/minecraft.sh",
-        source => 'puppet:///modules/barronstack/minecraft.sh',
+        source => 'puppet:///modules/minecraft/service.sh',
         owner  => $user,
         group  => $group,
         mode   => '0774',
@@ -115,4 +115,5 @@ class barronstack::server($name, $config){
             File["${server_path}/configs"]
         ],
     }
+
 }
