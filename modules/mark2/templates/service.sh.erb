@@ -27,7 +27,7 @@ MC_NAME=`basename $MC_PATH`
 run_as() {
     if [ $CURRENT_USER == $MC_USER ]; then
         bash -c "$1"
-    elif type 'sudo' > /dev/null; then
+    elif command -v sudo >/dev/null 2>&1; then
         sudo su - $MC_USER -c "$1"
     else
         su - $MC_USER -c "$1"
