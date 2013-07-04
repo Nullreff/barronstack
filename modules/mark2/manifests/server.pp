@@ -20,8 +20,8 @@
 #
 class mark2::server(
   $server = 'minecraft',
-  $user = $server,
-  $home = "/home/${user}",
+  $user = 'minecraft',
+  $home = '/home/minecraft',
 ) {
   $paths = ['/bin', '/sbin', '/usr/bin', '/usr/sbin']
 
