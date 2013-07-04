@@ -1,5 +1,5 @@
-Barronstack Puppet Module
-=========================
+Barronstack
+===========
 
-Manages the provisoning of servers on [Barronstack](http://barronstack.com/).
+Common Puppet modules and installer scripts for hosting Minecraft servers.
 
