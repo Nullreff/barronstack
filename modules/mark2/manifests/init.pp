@@ -44,13 +44,32 @@ class mark2(
   file { '/tmp/installTwisted.sh':
     ensure => present,
     source => 'puppet:///modules/mark2/installTwisted.sh',
+    owner  => 'root',
+    group  => 'root',
     mode   => '0755',
   }
 
   file { '/usr/bin/mark2':
     ensure => link,
     target => "${installPath}/mark2",
+    owner  => 'root',
+    group  => 'root',
     mode   => '0755',
+  }
+
+  file { '/etc/mark2':
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+  }
+
+  file { '/etc/mark2/mark2.properties':
+    ensure  => present,
+    source  => 'puppet:///modules/mark2/mark2.properties',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    require => File['/etc/mark2'],
   }
 
   exec { 'installTwisted':
