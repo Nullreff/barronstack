@@ -22,7 +22,7 @@ CURRENT_USER=`whoami`
 # BungeeCord home direcory
 MC_PATH="<%= @home %>"
 # Server server
-MC_NAME=`baseserver $MC_PATH`
+MC_NAME=`basename $MC_PATH`
 
 run_as() {
     if [ $CURRENT_USER == $MC_USER ]; then
