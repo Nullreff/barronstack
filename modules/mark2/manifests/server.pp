@@ -61,7 +61,7 @@ class mark2::server(
 
   user { $user:
     ensure => present,
-    shell  => '/bin/false',
+    shell  => '/bin/sh',
     home   => $home,
   }
 
