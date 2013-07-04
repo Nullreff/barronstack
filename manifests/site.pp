@@ -7,5 +7,5 @@ node /^bungee\d+.*/ {
 }
 
 node /^host\d+.*/ {
-  include mark2::server
+  mark2::server { 'minecraft': }
 }

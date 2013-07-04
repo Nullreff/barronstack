@@ -1,5 +1,5 @@
 #!/bin/bash
-# /etc/init.d/<%= @server %>
+# /etc/init.d/<%= @title %>
 
 ### BEGIN INIT INFO
 ## Provides: minecraft
@@ -9,8 +9,8 @@
 ## Should-Stop: $network
 ## Default-Start: 2 3 4 5
 ## Default-Stop: 0 1 6
-## Short-Description: <%= @server %> Minecraft server
-## Description: Init script for the <%= @server %> Minecraft server
+## Short-Description: <%= @title %> Minecraft server
+## Description: Init script for the <%= @title %> Minecraft server
 #### END INIT INFO
 
 # Created by Nullreff
@@ -43,15 +43,15 @@ case "$1" in
         ;;
     status)
         if mark2 list | grep $MC_NAME > /dev/null; then
-            echo "<%= @server %> is running"
+            echo "<%= @title %> is running"
             exit 0
         else
-            echo "<%= @server %> is not running"
+            echo "<%= @title %> is not running"
             exit 1
         fi
         ;;
     *)
-        echo "Usage: /etc/init.d/<%= @server %> {start|stop|status}"
+        echo "Usage: /etc/init.d/<%= @title %> {start|stop|status}"
         exit 1
         ;;
 esac

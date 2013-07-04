@@ -3,7 +3,7 @@
 # Sets up a minecraft server container running on mark2
 #
 # Parameters:
-#   [*server*] - Server name
+#   [*title*] - Server name
 #   [*user*] - The user name to run the server under
 #   [*home*] -  The directory to run the server out of
 #
@@ -12,16 +12,14 @@
 # Requires:
 #
 # Sample Usage:
-#   class { 'mark2::server':
-#     server => 'minecraft',
+#   mark2::server { 'minecraft':
 #     user => 'minecraft',
 #     home => '/home/minecraft',
 #   }
 #
-class mark2::server(
-  $server = 'minecraft',
-  $user = 'minecraft',
-  $home = '/home/minecraft',
+define mark2::server(
+  $user = $title,
+  $home = "/home/${title}",
 ) {
   $paths = ['/bin', '/sbin', '/usr/bin', '/usr/sbin']
 
@@ -33,6 +31,9 @@ class mark2::server(
     }
     debian, ubuntu: {
       $javaPackage = 'openjdk-7-jre-headless'
+    }
+    default: {
+      fail('Unsuported operating system.')
     }
   }
 
@@ -46,7 +47,7 @@ class mark2::server(
     group  => $user,
   }
 
-  file { "/etc/init.d/${server}":
+  file { "/etc/init.d/${title}":
     ensure  => present,
     content => template('mark2/service.sh.erb'),
     owner   => 'root',
@@ -54,9 +55,9 @@ class mark2::server(
     mode    => '0755',
   }
 
-  service { $server:
+  service { $title:
     enable  => true,
-    require => File["/etc/init.d/${server}"],
+    require => File["/etc/init.d/${title}"],
   }
 
   user { $user:
