@@ -1,0 +1,59 @@
+#!/bin/bash
+# /etc/init.d/<%= @server %>
+
+### BEGIN INIT INFO
+## Provides: minecraft
+## Required-Start: $local_fs $remote_fs
+## Required-Stop: $local_fs $remote_fs
+## Should-Start: $network
+## Should-Stop: $network
+## Default-Start: 2 3 4 5
+## Default-Stop: 0 1 6
+## Short-Description: <%= @server %> Minecraft server
+## Description: Init script for the <%= @server %> Minecraft server
+#### END INIT INFO
+
+# Created by Nullreff
+
+# User that should run the server
+MC_USER="<%= @user %>"
+# The user running this script
+CURRENT_USER=`whoami`
+# BungeeCord home direcory
+MC_PATH="<%= @home %>"
+# Server server
+MC_NAME=`baseserver $MC_PATH`
+
+run_as() {
+    if [ $CURRENT_USER == $MC_USER ]; then
+        bash -c "$1"
+    elif type 'sudo' > /dev/null; then
+        sudo su - $MC_USER -c "$1"
+    else
+        su - $MC_USER -c "$1"
+    fi
+}
+
+case "$1" in
+    start)
+        run_as "mark2 start $MC_PATH"
+        ;;
+    stop)
+        run_as "mark2 stop -n $MC_NAME"
+        ;;
+    status)
+        if mark2 list | grep $MC_NAME > /dev/null; then
+            echo "<%= @server %> is running"
+            exit 0
+        else
+            echo "<%= @server %> is not running"
+            exit 1
+        fi
+        ;;
+    *)
+        echo "Usage: /etc/init.d/<%= @server %> {start|stop|status}"
+        exit 1
+        ;;
+esac
+
+exit 0
