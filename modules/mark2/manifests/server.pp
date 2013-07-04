@@ -64,8 +64,4 @@ class mark2::server(
     shell  => '/bin/sh',
     home   => $home,
   }
-
-  group { $user:
-    ensure => present,
-  }
 }
