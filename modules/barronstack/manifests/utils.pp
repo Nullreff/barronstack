@@ -1,6 +1,8 @@
-package { [
-  'vim',
-  'htop',
-]:
-  ensure => 'installed',
+class barronstack::utils {
+  package { [
+    'vim',
+    'htop',
+  ]:
+    ensure => 'installed',
+  }
 }
