@@ -49,7 +49,7 @@ class bungeecord {
   file { 'bungeeCordInit':
     ensure  => 'present',
     path    => '/etc/init.d/bungeecord',
-    source  => 'puppet:///modules/bungeecord/service.sh',
+    content => template('bungeecord/service.sh.erb'),
     mode    => '0755',
     require => Exec['downloadBungeeCord'],
   }

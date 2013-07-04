@@ -14,18 +14,17 @@
 ### END INIT INFO
 
 # Created by Nullreff
-# Inspiration taken from Ahtenus init script
 
 # Name of BungeeCord jar
 SERVICE="BungeeCord.jar"
 # Name to use for the screen instance
-SCREEN="bungee"
+SCREEN="<%= @userName %>"
 # User that should run the server
-BUNGEE_USER="bungee"
+BUNGEE_USER="<%= @userName %>"
 # The user running this script
 CURRENT_USER=`whoami`
 # BungeeCord home direcory
-BUNGEE_PATH="/home/$BUNGEE_USER"
+BUNGEE_PATH="<%= @home %>"
 # Number of CPUs/cores to usei
 CPU_COUNT=`nproc`
 # Memory to use
