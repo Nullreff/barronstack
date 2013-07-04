@@ -27,7 +27,6 @@ class bungeecord {
   package { [
     'wget',
     'sudo',
-    'vim',
     'screen',
     'openjdk-7-jre-headless',
   ]:
