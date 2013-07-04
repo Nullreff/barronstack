@@ -90,7 +90,8 @@ class mark2(
   }
 
   exec { 'installMark2Dependencies':
-    command => 'pip install -r requirements.txt',
+    command => 'pip install -r requirements.txt && touch install-complete',
+    creates => "${installPath}/install-complete",
     cwd     => $installPath,
     path    => $paths,
     require => [
