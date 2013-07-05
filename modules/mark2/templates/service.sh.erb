@@ -36,7 +36,20 @@ run_as() {
 
 case "$1" in
     start)
-        run_as "mark2 start $MC_PATH"
+        run_as "
+        <%- if @port != '25565' -%>
+            # Make sure the server is running on the right port
+            sed -i 's/server-port=[0-9]*/server-port=<%= @port %>/' $MC_PATH/server.properties
+
+        <%- end -%>
+        <%- if @bungeeCord -%>
+            # Enable bungeecord settings
+            sed -i 's/online-mode=true/online-mode=false/' $MC_PATH/server.properties
+            sed -i 's/connection-throttle: [0-9]*/connection-throttle: -1/' $MC_PATH/server.properties
+
+        <%- end -%>
+            mark2 start $MC_PATH
+        "
         ;;
     stop)
         run_as "mark2 stop -n $MC_NAME"
