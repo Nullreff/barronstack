@@ -21,7 +21,7 @@ define mark2::server(
   $user = $title,
   $home = "/home/${title}",
   $port = '25565',
-  $bungeeCord = undef,
+  $bungeecord = undef,
 ) {
   $paths = ['/bin', '/sbin', '/usr/bin', '/usr/sbin']
 
@@ -53,14 +53,14 @@ define mark2::server(
     home   => $home,
   }
 
-  if $bungeeCord != undef {
+  if $bungeecord != undef {
     include 'firewall'
 
     firewall { "100 allow connections to ${title} from bungeecord":
       chain          => 'INPUT',
       dport          => $port,
       proto          => 'tcp',
-      inverse_source => $bungeeCord,
+      inverse_source => $bungeecord,
       action         => 'drop',
     }
   }
