@@ -60,6 +60,7 @@ rm -rf /etc/puppet; mkdir /etc/puppet
 git clone https://github.com/Nullreff/barronstack.git /etc/puppet
 cd /etc/puppet
 git submodule init
+git submodule update
 cd -
 
 
