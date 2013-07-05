@@ -54,12 +54,14 @@ define mark2::server(
   }
 
   if $bungeeCord != undef {
+    include 'firewall'
+
     firewall { "100 allow connections to ${title} from bungeecord":
-      chain  => 'INPUT',
-      dport  => $port,
-      proto  => 'tcp',
-      source => "! ${bungeeCord}",
-      action => 'drop',
+      chain          => 'INPUT',
+      dport          => $port,
+      proto          => 'tcp',
+      inverse_source => $bungeeCord,
+      action         => 'drop',
     }
   }
 }

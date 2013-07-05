@@ -58,9 +58,10 @@ rm -rf /etc/puppet; mkdir /etc/puppet
 
 # Clone the latest copy of the configuration into it
 git clone https://github.com/Nullreff/barronstack.git /etc/puppet
+cd /etc/puppet
+git submodule init
+cd -
 
-# Install needed modules
-puppet module install puppetlabs/firewall
 
 # Then run the script to configure the server
 puppet apply /etc/puppet/manifests/site.pp
