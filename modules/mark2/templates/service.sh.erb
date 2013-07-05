@@ -45,7 +45,7 @@ case "$1" in
         <%- if @bungeecord -%>
             # Enable bungeecord settings
             sed -i 's/online-mode=true/online-mode=false/' $MC_PATH/server.properties
-            sed -i 's/connection-throttle: [0-9]*/connection-throttle: -1/' $MC_PATH/server.properties
+            sed -i 's/connection-throttle: [0-9]*/connection-throttle: -1/' $MC_PATH/bukkit.yml
 
         <%- end -%>
             mark2 start $MC_PATH
