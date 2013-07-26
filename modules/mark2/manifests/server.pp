@@ -49,7 +49,7 @@ define mark2::server(
 
   user { $user:
     ensure => present,
-    shell  => '/bin/sh',
+    shell  => '/bin/bash',
     home   => $home,
   }
 
